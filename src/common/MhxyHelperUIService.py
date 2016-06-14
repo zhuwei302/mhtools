@@ -5,8 +5,9 @@ Created on 2016-5-26
 
 @author: zhuwei
 '''
-import win32gui
 import win32con
+import win32gui
+from win32gui import *
 from pprint import pprint
 
 def gbk2utf8(s):
@@ -38,6 +39,16 @@ def show_window_attr(hWndList,id):
             print '窗口类名:%s' % (clsname)
             # print '窗口大小:%s' % (win32gui.)
             print ''
+
+            # win32gui.SetWindowPos(h,0,0,0,0,0,win32con.SWP_NOSIZE|win32con.SWP_NOZORDER) #移动到0（0,0）位置
+            a = win32gui.GetWindowPlacement(h)  #获取位置信息
+            if len(a)==5:
+                rect = a[4]
+                startX = rect[0]
+                startY = rect[1]
+                endX = rect[2]
+                endY = rect[3]
+
 
 
 

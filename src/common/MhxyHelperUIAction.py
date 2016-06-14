@@ -13,4 +13,4 @@ def beginYb(kj):
     if "请输入游戏ID" in id:
         tkMessageBox.showerror(title="错误", message="请输入数字ID")
     else:
-        MhxyHelperUIService.getMHXYWinById(id)
+         MhxyHelperUIService.getMHXYWinById(id)
