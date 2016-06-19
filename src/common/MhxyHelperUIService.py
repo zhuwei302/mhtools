@@ -7,8 +7,10 @@ Created on 2016-5-26
 '''
 import win32con
 import win32gui
+import utils.MouseAndKeyboardUtils
 from win32gui import *
 from pprint import pprint
+from ctypes import windll
 
 def gbk2utf8(s):
     return s.decode('gbk').encode('utf-8')
@@ -48,6 +50,16 @@ def show_window_attr(hWndList,id):
                 startY = rect[1]
                 endX = rect[2]
                 endY = rect[3]
+                print(startX,startY,endX,endY)
+                m_posX = startX + (endX - startX)/2
+                m_posY = startY + (endY - startY)/2
+                utils.MouseAndKeyboardUtils.mouse_dclick(m_posX,m_posY)
+                # str = 'hello'
+                # utils.MouseAndKeyboardUtils.key_input(str)
+                break
+
+
+
 
 
 
