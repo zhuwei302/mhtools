@@ -180,5 +180,13 @@ def key_input(str=''):
     win32api.keybd_event(VK_CODE[c],0,win32con.KEYEVENTF_KEYUP,0)
 if __name__ == "__main__":
   mouse_click(1024,470)
-  str = 'hello'
-  key_input(str)
+  #模拟按下上键
+  win32api.keybd_event(0x26, 0, 0, 0)
+  win32api.keybd_event(0x26, 0, win32con.KEYEVENTF_KEYUP, 0)
+  #模拟按下回车键
+  win32api.keybd_event(0x0D, 0, 0, 0)
+  win32api.keybd_event(0x0D, 0, win32con.KEYEVENTF_KEYUP, 0)
+
+
+  # str = 'hello'
+  # key_input(str)
