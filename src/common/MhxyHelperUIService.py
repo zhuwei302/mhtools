@@ -7,15 +7,22 @@ Created on 2016-5-26
 '''
 import win32con
 import win32gui
+import win32api
+import time
+import autopy
 import utils.MouseAndKeyboardUtils
 from win32gui import *
 from pprint import pprint
 from ctypes import windll
 
+
+'''转换编码'''
 def gbk2utf8(s):
     return s.decode('gbk').encode('utf-8')
 
-def show_window_attr(hWndList,id):
+
+'''显示窗口属性并返回窗口句柄'''
+def getWindow(hWndList,id):
     '''''
     显示窗口的属性
     :return:
@@ -41,33 +48,37 @@ def show_window_attr(hWndList,id):
             print '窗口类名:%s' % (clsname)
             # print '窗口大小:%s' % (win32gui.)
             print ''
+            break
 
-            # win32gui.SetWindowPos(h,0,0,0,0,0,win32con.SWP_NOSIZE|win32con.SWP_NOZORDER) #移动到0（0,0）位置
-            a = win32gui.GetWindowPlacement(h)  #获取位置信息
-            if len(a)==5:
-                rect = a[4]
-                startX = rect[0]
-                startY = rect[1]
-                endX = rect[2]
-                endY = rect[3]
-                print(startX,startY,endX,endY)
-                m_posX = startX + (endX - startX)/2
-                m_posY = startY + (endY - startY)/2
-                utils.MouseAndKeyboardUtils.mouse_dclick(m_posX,m_posY)
-                # str = 'hello'
-                # utils.MouseAndKeyboardUtils.key_input(str)
-                break
+    return h
 
 
 
+'''移动鼠标到窗口中央'''
+def setMousePositonByHwn(h):
+    # win32gui.SetWindowPos(h,0,0,0,0,0,win32con.SWP_NOSIZE|win32con.SWP_NOZORDER) #移动到0（0,0）位置
+    a = win32gui.GetWindowPlacement(h)  # 获取位置信息
+    if len(a) == 5:
+        rect = a[4]
+        startX = rect[0]
+        startY = rect[1]
+        endX = rect[2]
+        endY = rect[3]
+        print(startX, startY, endX, endY)
+        m_posX = startX + (endX - startX) / 2
+        m_posY = startY + (endY - startY) / 2
+        utils.MouseAndKeyboardUtils.mouse_dclick(m_posX, m_posY)
+        # str = 'hello'
+        # utils.MouseAndKeyboardUtils.key_input(str)
 
 
 
-
+'''遍历窗口集合'''
 def show_windows(hWndList):
     for h in hWndList:
-        show_window_attr(h)
+        getWindow(h)
 
+'''获取所有窗口列表'''
 def getTopWindows():
     '''''
     演示如何列出所有的顶级窗口
@@ -79,6 +90,8 @@ def getTopWindows():
 
     return hWndList
 
+
+'''获取子窗口'''
 def getChildsWindows(parent):
     '''''
     演示如何列出所有的子窗口
@@ -93,12 +106,54 @@ def getChildsWindows(parent):
     return hWndChildList
 
 
+'''窗口置前'''
+def windowToTop(hwnd):
+    win32gui.SetForegroundWindow(hwnd)
+
+
+
+'''喊话'''
+def talk(h):
+    a = win32gui.GetWindowPlacement(h)  # 获取位置信息
+    if len(a) == 5:
+        rect = a[4]
+        startX = rect[0]
+        startY = rect[1]
+        endX = rect[2]
+        endY = rect[3]
+        print(startX, startY, endX, endY)
+        m_posX = startX + (endX - startX) / 4
+        m_posY = endY - 15
+        autopy.mouse.smooth_move(m_posX,m_posY)
+        windowToTop(h)
+        # utils.MouseAndKeyboardUtils.mouse_dclick(m_posX, m_posY)
+        # str = 'hello'
+        # utils.MouseAndKeyboardUtils.key_input(str)
+    # 模拟按下上键
+    time.sleep(0.5)
+    win32api.keybd_event(0x26, 0, 0, 0)
+    print("up down")
+    win32api.keybd_event(0x26, 0, win32con.KEYEVENTF_KEYUP, 0)
+    print("up up")
+    # 模拟按下回车键
+    win32api.keybd_event(0x0D, 0, 0, 0)
+    print("enter down")
+    win32api.keybd_event(0x0D, 0, win32con.KEYEVENTF_KEYUP, 0)
+    print("enter up")
+
+
+
+
 
 
 '''通过传入的字符串获取窗口'''
 def getMHXYWinById(id):
     hWndList = getTopWindows()
-    show_window_attr(hWndList,id)
+    h = getWindow(hWndList,id)
+    #窗口置前
+    # windowToTop(h)
+    #发话
+    talk(h)
 
 
 

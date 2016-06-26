@@ -27,7 +27,7 @@ label = Label(root,text="游戏ID：").grid(row=0,column=0) #创建标签
 
 '''文本框'''
 text = StringVar()
-text.set("38007462")
+text.set("TESTING")
 entry = Entry(root)
 entry['textvariable'] = text
 entry.grid(row=0,column=1)
